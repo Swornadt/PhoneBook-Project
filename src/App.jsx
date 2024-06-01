@@ -1,22 +1,21 @@
 import React,{useState} from 'react';
+import SearchFilter from './SearchFilter';
+import InputBox from './InputBox';
+import OutputBox from './OutputBox';
 
 const App = () => {
   const [persons,setPersons] = useState([])
   const [newName,setNewName] = useState("");
   const [newNumber,setNewNumber] = useState("");
-  const [search, setSearch] = useState("");
+  const [filteredPersons, setFilteredPersons]= useState([]);
 
   //Change Block:
   const handleNameChange = (e) => {
     setNewName(e.target.value);
-  }
+}
   const handleNumberChange = (e) => {
     setNewNumber(e.target.value);
-  }
-  const handleSearchChange = (e) => {
-    setSearch(e.target.value);
-  }
-
+}
   //Check Block:
   const nameCheck = (newName) => {
     for(let i=0; i<persons.length; i++){
@@ -67,50 +66,20 @@ const App = () => {
     setNewNumber("");
     console.log(updatedPersons)
   }
-  const handleSearch = (e) => {
-    const filteredPersons = persons.filter(person => person.number === search)
-    console.log(filteredPersons);
-  }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <input type="text"
-             onChange={handleSearchChange} // (?)
-             value={search}
-             placeholder="Search Number"/>
-      <button type="submit" onClick={(e) => handleSearch(e,persons)}> Search </button>
-      <br/><br/>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input type="text" 
-                value={newName} 
-                onChange={handleNameChange}/>
-        </label>
-        <br/>
-        <label>
-          Number:
-          <input type="text"
-                 value={newNumber}
-                 onChange={handleNumberChange}/>
-        </label>
-        <br/>
-        <button type="submit">
-          Add
-        </button>
-      </form>
+      <SearchFilter persons={persons} //uplifting filteredpersons to send to outputbox
+                    setFilteredPersons={setFilteredPersons}/>
+      <InputBox newName={newName}
+                newNumber={newNumber}
+                handleNameChange={handleNameChange}
+                handleNumberChange={handleNumberChange}
+                handleSubmit={handleSubmit}/>
       <hr></hr>
-      <h2>Numbers</h2>
-      <ul>
-        {
-          persons.map((person,index) => (
-            <li key={index}>
-              {person.name} : {person.number}
-            </li>
-          ))
-        }
-      </ul>
+      <OutputBox persons={persons}
+                 filteredPersons={filteredPersons}/>
     </div>
   );
 }
