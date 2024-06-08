@@ -1,14 +1,15 @@
 import React,{useState} from 'react';
 
-const SearchFilter = ({persons,setFilteredPersons}) => {
+const SearchFilter = ({persons,setFilterText}) => {
     //uplifting filteredpersons to parent
     const [search, setSearch] = useState("");
     const handleSearchChange = (e) => {
         setSearch(e.target.value);
     }
-    const handleSearch = (e) => {
-        const filteredPersons = persons.filter(person => person.number === search)
-        setFilteredPersons(filteredPersons);
+    const handleSearch = () => {
+        const searchText = search.trim();
+        const filteredPersons = persons.filter(person => person.name.toLowerCase().includes(searchText.toLowerCase()));
+        setFilterText(search);
     }
     return (
         <div>
